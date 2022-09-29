@@ -1,0 +1,18 @@
+img.sidebar-logo {
+  width: 100%;
+  padding: 20px;
+}
+
+li.sidebar-single {
+  list-style: none;
+  text-align: center;
+  margin: 30px 0px;
+}
+.custom-link {
+  color: black;
+  text-decoration: none;
+  &:hover{
+    color: gray;
+  }
+}
+
