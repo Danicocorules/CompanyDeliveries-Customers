@@ -1,1 +1,6 @@
-<p>pedidos-lista works!</p>
+<div class="row">
+  <div class="col-4 mt-3"
+       *ngFor="let pedido of pedidos">
+    <app-card-pedido [pedidosAct]="pedido" ></app-card-pedido>
+  </div>
+</div>
