@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PedidosService } from '../../../services/pedidos.service';
 import { Pedido } from '../../interfaces/pedidos.interface'
 
@@ -14,9 +14,30 @@ export class PedidosListaComponent implements OnInit {
   constructor( private pedidosServ: PedidosService ) { }
 
   ngOnInit(): void {
+    this.initPedidos();
+  }
+
+  public initPedidos() {
     this.pedidosServ.getPedidos()
     .subscribe( (resp: Pedido[]) => {
       this.pedidos = resp;
     });
   }
+
+  buscarId(id:number) {
+    this.pedidosServ.getSinglePedido(id)
+      .subscribe( (pedidoBusqueda: any) => this.pedidos = pedidoBusqueda );
+  }
+
 }
+
+
+
+
+
+    // this.pedidosServ.getSinglePedido( this.idBusq )
+    //   .subscribe( ( pedido:any ) =>  {
+    //     this.pedidoBusq = pedido;
+    //     this.idBusqueda.emit( this.pedidoBusq );
+    //     console.log('BUSCADOR', this.pedidoBusq);
+    //   } );
