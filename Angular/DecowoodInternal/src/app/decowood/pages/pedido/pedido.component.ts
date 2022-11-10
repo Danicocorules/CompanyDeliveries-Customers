@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PedidosService } from 'src/app/services/pedidos.service';
 import { Pedido, ProductoDetalle } from '../../interfaces/pedidos.interface';
 import { switchMap } from 'rxjs/operators';
-import { Proveedores } from '../../interfaces/proveedores.interface'
+import { ProveedoresGestionService } from 'src/app/services/proveedores-gestion.service';
 
 @Component({
   selector: 'app-pedido',
@@ -15,13 +15,12 @@ export class PedidoComponent implements OnInit {
   pedidoRequerido!: Pedido;
   productos!: ProductoDetalle[];
 
-  proveedores!: Proveedores[];
-  assign: boolean = false;
-
+  prodsDef!: ProductoDetalle[];
 
   constructor( private activatedRoute: ActivatedRoute,
-               private pedidosServ: PedidosService
-                ) { }
+               private pedidosServ: PedidosService,
+               private proveedorGestion: ProveedoresGestionService
+               ) { }
 
     ngOnInit(): void {
       this.activatedRoute.params
@@ -34,9 +33,18 @@ export class PedidoComponent implements OnInit {
       });
     }
 
-    guardarProveedor() {
-      console.log('se edita el prod');
+    guardarCambios(){
+      this.pedidoRequerido.producto_detalle = this.prodsDef;
 
+      this.pedidosServ.putPedido( this.pedidoRequerido )
+        .subscribe( (resp:any) => this.pedidoRequerido = resp );
+
+      // Pasamos la data al proveedor para actualizarlo y asignarle el pedido
+      this.proveedorGestion.recibirPedido(this.pedidoRequerido);
+    }
+
+    recibirCambios( prodModif:any ) {
+      this.prodsDef = prodModif;
     }
 
 }
